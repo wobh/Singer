@@ -25,3 +25,7 @@ $ singer --help
 Usage: singer.rb [OPTIONS] PROJECT_NAME
     -h, --help                       Show this message
 #+END_EXAMPLE
+
+* Warnings
+
+Test project. Use something like [[https://github.com/quirkey/sinatra-gen]] instead.
