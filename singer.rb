@@ -7,9 +7,30 @@ require 'fileutils'
 
 class Singer
   attr_reader :project_name, :project_path
+  attr_reader :gemfile_text, :appfile_text
   
   def initialize (args)
     @project_name = args[:project_name]
+    
+    if args[:with_gemfile]
+      @gemfile_text = <<-EOF
+# #{project_name} Gems
+
+source 'https://rubygems.org'
+
+gem 'sinatra', :github => "sinatra/sinatra"
+gem 'sinatra-contrib', :github => "sinatra/sinatra-contrib"
+EOF
+    end
+
+    if args[:with_appfile]
+      @appfile_text = <<-EOF
+# #{project_name} Application
+
+require 'sinatra'
+require 'sinatra/reloader' if development?
+EOF
+    end
   end
 
   
@@ -37,6 +58,16 @@ class Singer
     return make_path_in_project('views')
   end
 
+  def make_gemfile
+    gemfile_path = File.join(project_path, "Gemfile")
+    File.open(gemfile_path, "w") { |f| f.write gemfile_text }
+  end
+
+  def make_appfile
+    appfile_path = File.join(project_path, "#{project_name}.rb")
+    File.open(appfile_path, "w") { |f| f.write appfile_text }
+  end
+  
   def create()
     # Create project
     make_folder_project()
