@@ -3,6 +3,8 @@
 # Singer
 # build new sinatra projects
 
+require 'fileutils'
+
 class Singer
   attr_reader :project_name, :project_path
   
@@ -11,15 +13,21 @@ class Singer
   end
 
   def make_folder_project()
-    # make a project file or error
-    Dir.mkdir(project_name)
+    # Make a project file or error
+    FileUtils.mkdir(project_name)
     @project_path = Dir.new(project_name)
   end
-
-  def make_project()
-    # Make whole project
+  
+  def create()
+    # Create project
     make_folder_project()
   end
+
+  def remove()
+    # Remove project
+    FileUtils.rm_rf(project_name)
+  end
+
 end
 
 if __FILE__ == $PROGRAM_NAME
@@ -47,7 +55,7 @@ if __FILE__ == $PROGRAM_NAME
 
   
   singer = Singer.new(options)
-  singer.make_project
+  singer.create()
   
 end
 

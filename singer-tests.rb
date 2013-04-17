@@ -14,13 +14,15 @@ describe "Singer tests" do
   
   it "should create a project folder \'foo\'" do
     singer.make_folder_project().must_equal singer.project_path
-    Dir.rmdir(singer.project_name)
+    singer.remove()
   end
 
   it "should raise File Exists error if project folder exists" do
-    singer.make_folder_project()
-    proc { singer.make_folder_project() }.must_raise Errno::EEXIST
-    Dir.rmdir(singer.project_name)
+    proc {
+      singer.make_folder_project()
+      singer.make_folder_project()
+    }.must_raise Errno::EEXIST
+    singer.remove()
   end
 
 end
