@@ -13,7 +13,7 @@ describe "Singer tests" do
   
   
   it "should create a project folder \'foo\'" do
-    singer.make_folder_project().must_equal singer.project_path
+    singer.make_folder_project.path.must_equal singer.project_path
     singer.remove()
   end
 
@@ -25,4 +25,16 @@ describe "Singer tests" do
     singer.remove()
   end
 
+  it "should create public and views folders" do
+    singer.make_folder_project()
+    
+    public_dir = singer.make_folder_public()
+    public_dir.path.must_equal File.join(singer.project_path, "public")
+
+    view_dir = singer.make_folder_views()
+    view_dir.path.must_equal File.join(singer.project_path, "views")
+
+    singer.remove()
+  end
+  
 end
